@@ -53,3 +53,13 @@ def addtask(bot, trigger):
         bot.say('As you wish.')
     else:
         bot.say('You dont have permissions sadly.')
+
+#kolibri_user is the default username for IRCC on Kolibri. So we need to reuse them :)        
+@willie.module.rule('.*')
+@willie.module.event("PART", "QUIT")
+def handle_part(bot, trigger):
+    if(trigger.nick[:12] == 'kolibri_user'):        
+        users.remove(trigger.nick)
+#        bot.say(trigger.nick + 'has left the channel. Reusing this nick.')
+#    else:
+#        bot.say(trigger.nick + 'has left the channel. NOT Reusing.')
