@@ -20,29 +20,31 @@ def sethelp(bot, trigger):
 
 @commands('help')
 def help(bot, trigger):
-    bot.say(helpmsg)
+    bot.reply(helpmsg)
 
 @commands('logs')
 def logs(bot, trigger):    
-    bot.say('Check out (temporary) logs at http://pastebin.com/18S9gwpX')
+    bot.reply('Check out (temporary) logs at http://pastebin.com/18S9gwpX')
 
 @commands('cmd')
 def cmd(bot, trigger):
-    bot.say('Supported commands : !info !logs !wiki !help !cmd !sethelp')
+    bot.reply('Supported commands : !info !logs !wiki !help !cmd !sethelp')
 
 @commands('info')
 def info(bot, trigger):
-    bot.say('Visit the KolibriOS board at board.kolibrios.org')
+    bot.reply('Visit the KolibriOS board at board.kolibrios.org')
     
 @commands('wiki')
 def wiki(bot, trigger):
-    bot.say('Visit KolibriOS wiki at http://wiki.kolibrios.org/')
+    bot.reply('Visit KolibriOS wiki at http://wiki.kolibrios.org/')
 
 @willie.module.rule('.*')
 def print_help(bot, trigger):
     if trigger.nick not in users:
+          users.append(trigger.nick)
+
+    if(trigger.group(1)!='help'):
           bot.reply(helpmsg)
-          users.append(trigger.nick)    
     
 #GSoC related stuff comes later. Below this part.
 @commands('addtask')
