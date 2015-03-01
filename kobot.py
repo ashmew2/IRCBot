@@ -43,7 +43,9 @@ def print_help(bot, trigger):
     if trigger.nick not in users:
           users.append(trigger.nick)
 
-    if(trigger.group(1)!='help'):
+    print('Trigger group is : ' + trigger.group())
+
+    if trigger.group()!='!help':
           bot.reply(helpmsg)
     
 #GSoC related stuff comes later. Below this part.
@@ -52,5 +54,4 @@ def addtask(bot, trigger):
     if trigger.admin:
         bot.say('As you wish.')
     else:
-        bot.say('You dont have permissions sadly.')        
-        
+        bot.say('You dont have permissions sadly.')
