@@ -38,15 +38,13 @@ def info(bot, trigger):
 def wiki(bot, trigger):
     bot.reply('Visit KolibriOS wiki at http://wiki.kolibrios.org/')
 
+#trigger.group contains the entire thing.
 @willie.module.rule('.*')
 def print_help(bot, trigger):
     if trigger.nick not in users:
           users.append(trigger.nick)
-
-    print('Trigger group is : ' + trigger.group())
-
-    if trigger.group()!='!help':
-          bot.reply(helpmsg)
+          if trigger.group()!='!help':
+              bot.reply(helpmsg)
     
 #GSoC related stuff comes later. Below this part.
 @commands('addtask')
