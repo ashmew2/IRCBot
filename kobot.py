@@ -1,22 +1,33 @@
-from willie.module import commands
+#Todo: 
 
-@commands('greet')
-def greet(bot, trigger):
-    bot.say('Hi ' + trigger.nick + '! Have fun in the channel! In case no one\'s around, you can go over to board.kolibrios.org too!.')
+from willie.module import commands
 
 @commands('help')
 def help(bot, trigger):
-    bot.say('Ask KolibriOS|Yogev! Keep me outta this.')
+    bot.say('Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)')
 
 @commands('logs')
-def logs(bot, trigger):
-    bot.say('I will spit out all the logs with this!')
-
-
-@commands('intro')
-def intro(bot, trigger):
-    bot.say('Hi! I\'m KoBot. Here to serve you. (Use .cmd for more)')
+def logs(bot, trigger):    
+    bot.say('Check out (temporary) logs at http://pastebin.com/18S9gwpX')
 
 @commands('cmd')
 def cmd(bot, trigger):
-    bot.say('Supported commands : .cmd .greet .help .intro .logs')
+    bot.say('Supported commands : !info !logs !wiki !help !cmd')
+
+@commands('info')
+def info(bot, trigger):
+    bot.say('Visit the KolibriOS board at board.kolibrios.org')
+    
+@commands('wiki')
+def wiki(bot, trigger):
+    bot.say('Visit KolibriOS wiki at http://wiki.kolibrios.org/')
+
+    
+#GSoC related stuff comes later. Below this part.
+@commands('addtask')
+def addtask(bot, trigger):
+    if trigger.admin:
+        bot.say('As you wish.')
+    else:
+        bot.say('You dont have permissions sadly.')        
+        
