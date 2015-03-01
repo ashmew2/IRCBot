@@ -1,10 +1,26 @@
 #Todo: 
 
 from willie.module import commands
+import willie.module
+
+users=[]
+helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
+
+@commands('sethelp')
+def sethelp(bot, trigger):
+    if not trigger.group(2):
+        return
+
+    if trigger.admin:
+        global helpmsg
+        bot.reply('Setting helpmsg to : ' + trigger.group(2))
+        helpmsg = trigger.group(2);
+    else:
+        bot.reply('You do not have privileges for this command.')
 
 @commands('help')
 def help(bot, trigger):
-    bot.say('Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)')
+    bot.say(helpmsg)
 
 @commands('logs')
 def logs(bot, trigger):    
@@ -12,7 +28,7 @@ def logs(bot, trigger):
 
 @commands('cmd')
 def cmd(bot, trigger):
-    bot.say('Supported commands : !info !logs !wiki !help !cmd')
+    bot.say('Supported commands : !info !logs !wiki !help !cmd !sethelp')
 
 @commands('info')
 def info(bot, trigger):
@@ -22,6 +38,11 @@ def info(bot, trigger):
 def wiki(bot, trigger):
     bot.say('Visit KolibriOS wiki at http://wiki.kolibrios.org/')
 
+@willie.module.rule('.*')
+def print_help(bot, trigger):
+    if trigger.nick not in users:
+          bot.reply(helpmsg)
+          users.append(trigger.nick)    
     
 #GSoC related stuff comes later. Below this part.
 @commands('addtask')
