@@ -77,11 +77,15 @@ def wiki(bot, trigger):
 @willie.module.rule('.*')
 def print_help(bot, trigger):
     if trigger.nick not in users:
-          users.append(trigger.nick)
-          if trigger.group() not in fixed_cmdlist:  #Change to any command in command list
-              bot.reply(helpmsg)
-    else:
-        
+        users.append(trigger.nick)
+
+        if learn_cmdlist.has_key(trigger.group()):
+            bot.reply(learn_cmdlist[trigger.group()]
+        elif trigger.group() not in fixed_cmdlist:  #Change to any command in command list
+            bot.reply(helpmsg)
+                      
+    elif learn_cmdlist.has_key(trigger.group()):
+        bot.reply(learn_cmdlist[trigger.group()]
         
 #GSoC related stuff comes later. Below this part.
 @commands('addtask')
