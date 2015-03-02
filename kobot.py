@@ -5,6 +5,8 @@ import willie.module
 
 users=[]
 helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
+learn_cmdlist = {}
+fixed_cmdlist = ['sethelp', 'learn', ,'help', 'logs', 'cmd', 'info', 'wiki']
 
 @commands('sethelp')
 def sethelp(bot, trigger):
@@ -17,7 +19,40 @@ def sethelp(bot, trigger):
         helpmsg = trigger.group(2);
     else:
         bot.reply('You do not have privileges for this command.')
+        
+@commands('learn')
+def learn(bot, trigger):
+    usage_str = 'Usage : !learn !newcommand NEW COMMAND TEXT'
+    
+    if not trigger.group(2):
+        bot.reply(usage_str)
+        return
+            
+    if not trigger.admin:
+        bot.reply('You aren\'t allowed to teach me!')
+        return
+    else:
+        words = trigger.group(2).split(' ')
+        finalword = ''
+        
+        if len(words) < 2:
+            bot.reply(usage_str)
+            return
+        else: #Enough commands were supplied
+            if words[0][0] != '!':
+                finalword = '!' + words[0]
+            else:
+                finalword = words[0]
 
+            cmdstring = ''
+            for i in range(1, len(words)):
+                cmdstring+=str(words[i])
+                cmdstring+=' '
+
+            learn_cmdlist[finalword] = cmdstring
+
+            bot.reply('Added: ' + finalword + ' = ' + cmdstring)
+            
 @commands('help')
 def help(bot, trigger):
     bot.reply(helpmsg)
@@ -43,9 +78,11 @@ def wiki(bot, trigger):
 def print_help(bot, trigger):
     if trigger.nick not in users:
           users.append(trigger.nick)
-          if trigger.group()!='!help':
+          if trigger.group() not in fixed_cmdlist:  #Change to any command in command list
               bot.reply(helpmsg)
-    
+    else:
+        
+        
 #GSoC related stuff comes later. Below this part.
 @commands('addtask')
 def addtask(bot, trigger):
