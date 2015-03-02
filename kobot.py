@@ -6,7 +6,7 @@ import willie.module
 users=[]
 helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
 learn_cmdlist = {}
-fixed_cmdlist = ['sethelp', 'learn', ,'help', 'logs', 'cmd', 'info', 'wiki']
+fixed_cmdlist = ['sethelp', 'learn', 'help', 'logs', 'cmd', 'info', 'wiki']
 
 @commands('sethelp')
 def sethelp(bot, trigger):
@@ -80,12 +80,12 @@ def print_help(bot, trigger):
         users.append(trigger.nick)
 
         if learn_cmdlist.has_key(trigger.group()):
-            bot.reply(learn_cmdlist[trigger.group()]
+            bot.reply(learn_cmdlist[trigger.group()])
         elif trigger.group() not in fixed_cmdlist:  #Change to any command in command list
             bot.reply(helpmsg)
                       
     elif learn_cmdlist.has_key(trigger.group()):
-        bot.reply(learn_cmdlist[trigger.group()]
+        bot.reply(learn_cmdlist[trigger.group()])
         
 #GSoC related stuff comes later. Below this part.
 @commands('addtask')
