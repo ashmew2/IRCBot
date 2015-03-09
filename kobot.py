@@ -6,7 +6,7 @@ import willie.module
 users=[]
 helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
 learn_cmdlist = {}
-fixed_cmdlist = ['sethelp', 'learn', 'help', 'logs', 'cmd', 'info', 'wiki']
+fixed_cmdlist = ['!sethelp', '!learn', '!help', '!logs', '!cmd', '!info', '!wiki']
 
 @commands('sethelp')
 def sethelp(bot, trigger):
