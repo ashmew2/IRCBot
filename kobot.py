@@ -56,7 +56,7 @@ def learn(bot, trigger):
 @commands('help')
 def help(bot, trigger):
     bot.reply(helpmsg)
-
+    
 @commands('logs')
 def logs(bot, trigger):    
     bot.reply('Check out (temporary) logs at http://pastebin.com/18S9gwpX')
@@ -93,11 +93,13 @@ def addtask(bot, trigger):
     if trigger.admin:
         bot.say('As you wish.')
     else:
-        bot.say('You dont have permissions sadly.')
+        bot.say('You dont have permissions (sadly).')
 
 #kolibri_user is the default username for IRCC on Kolibri. So we need to reuse them :)        
 @willie.module.rule('.*')
-@willie.module.event("PART", "QUIT")
+@willie.module.event("PART")
+@willie.module.event("QUIT")
+
 def handle_part(bot, trigger):
     if(trigger.nick[:12] == 'kolibri_user'):        
         users.remove(trigger.nick)
