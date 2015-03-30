@@ -10,6 +10,7 @@ users=['xvilka', 'xvilka_', '_xvilka', 'xvilka__', 'xvilka___', 'hidnplayr', 'Ko
 helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
 learned_cmdlist = {}
 fixed_cmdlist = ['!sethelp', '!learn', '!help', '!logs', '!cmd', '!info', '!wiki']
+invalid_cmd_msg = 'Invalid command. Please try a valid command (See !cmd for details)'
 
 @commands('sethelp')
 def sethelp(bot, trigger):
@@ -99,7 +100,7 @@ def handle_msg(bot, trigger):
             bot.reply(helpmsg)
         #First time user typed A !string which is NOT A COMMAND
         elif words[0] not in fixed_cmdlist and words[0] not in learned_cmdlist:
-            bot.reply(helpmsg)        
+            bot.reply(invalid_cmd_msg)        
         #First time user typed a command which is in the learned list
         elif words[0] in learned_cmdlist:
             bot.reply(learned_cmdlist[trigger.group()])
