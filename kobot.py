@@ -29,7 +29,7 @@ def unlearn(bot, trigger):
         return
     else:
         if words[1] in learned_cmdlist:
-            learned_cmdlist.remove(words[1])
+            del learned_cmdlist[words[1]]
             bot.reply('Successfully forgot ' + words[1]) 
         else:
             bot.reply('Cannot forget something I was never taught!')
@@ -131,9 +131,10 @@ def handle_msg(bot, trigger):
         #Do not need to handle fixed commands
         
     elif words[0] in learned_cmdlist:
-        print 'Here4'
         #If this is not a first time user and entered a learned command
         bot.reply(learned_cmdlist[trigger.group()])
+    elif words[0] == '!' and words[0] not in learned_cmdlist and words[0] not in fixed_cmdlist:
+        bot.reply(invalid_cmd_msg)
     
                               
 #GSoC related stuff comes later. Below this part.
