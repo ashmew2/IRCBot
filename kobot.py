@@ -1,4 +1,7 @@
-#Todo: 
+'''
+The special character for sending commands to this bot is : !
+All the command lists use this special symbol as this is standard across most IRC channels
+'''
 
 from willie.module import commands
 import willie.module
@@ -6,7 +9,7 @@ import willie.module
 users=['xvilka', 'xvilka_', '_xvilka', 'xvilka__', 'xvilka___', 'hidnplayr', 'KolibriOS|yogev', 'ovf']
 helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
 learned_cmdlist = {}
-fixed_cmdlist = ['sethelp', 'learn', 'help', 'logs', 'cmd', 'info', 'wiki']
+fixed_cmdlist = ['!sethelp', '!learn', '!help', '!logs', '!cmd', '!info', '!wiki']
 
 @commands('sethelp')
 def sethelp(bot, trigger):
@@ -92,8 +95,7 @@ def handle_msg(bot, trigger):
             bot.reply(helpmsg)
         #First time user typed A !string which is NOT A COMMAND
         elif trigger.group() not in fixed_cmdlist and trigger.group() not in learned_cmdlist:
-            bot.reply(helpmsg)
-
+            bot.reply(helpmsg)        
         elif trigger.group() in learned_cmdlist:
             bot.reply(learned_cmdlist[trigger.group()])
 
