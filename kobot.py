@@ -7,7 +7,7 @@ from willie.module import commands
 import willie.module
 
 users=['xvilka', 'xvilka_', '_xvilka', 'xvilka__', 'xvilka___', 'hidnplayr', 'KolibriOS|yogev', 'ovf', 'ashmew2']
-helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
+helpmsg = 'KolibriOS is a tiny and nifty OS. Ask KolibriOS|Yogev for more help or visit us at www.kolibrios.org! (Or use !cmd)'
 learned_cmdlist = {}
 fixed_cmdlist = ['!sethelp', '!learn', '!unlearn', '!help', '!logs', '!cmd', '!info', '!wiki']
 invalid_cmd_msg = 'Invalid command. Please try a valid command (See !cmd for details)'
@@ -54,7 +54,7 @@ def sethelp(bot, trigger):
         
 @commands('learn')
 def learn(bot, trigger):
-    usage_str = 'Usage : !learn !newcommand NEW COMMAND TEXT'
+    usage_str = 'Usage : !learn !newcommand text for new command'
     
     if not trigger.group(2):
         bot.reply(usage_str)
@@ -91,7 +91,7 @@ def help(bot, trigger):
     
 @commands('logs')
 def logs(bot, trigger):    
-    bot.reply('Check out logs at http://logs.kolibrios.org/kolibrios.log')
+    bot.reply('Check out the IRC channel logs at http://logs.kolibrios.org/kolibrios.log')
 
 @commands('cmd')
 def cmd(bot, trigger):
