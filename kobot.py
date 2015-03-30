@@ -9,7 +9,7 @@ import willie.module
 users=['xvilka', 'xvilka_', '_xvilka', 'xvilka__', 'xvilka___', 'hidnplayr', 'KolibriOS|yogev', 'ovf', 'ashmew2']
 helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
 learned_cmdlist = {}
-fixed_cmdlist = ['!sethelp', '!learn', '!help', '!logs', '!cmd', '!info', '!wiki']
+fixed_cmdlist = ['!sethelp', '!learn', '!unlearn', '!help', '!logs', '!cmd', '!info', '!wiki']
 invalid_cmd_msg = 'Invalid command. Please try a valid command (See !cmd for details)'
 
 @commands('unlearn')
@@ -32,16 +32,20 @@ def unlearn(bot, trigger):
             del learned_cmdlist[words[1]]
             bot.reply('Successfully forgot ' + words[1]) 
         else:
-            bot.reply('Cannot forget something I don't remember!')
+            bot.reply('Cannot forget something I don\'t remember!')
 
     return
 
 @commands('sethelp')
 def sethelp(bot, trigger):
-    if not trigger.group(2):
-        return
 
-    if trigger.admin:
+    usage_str = '!sethelp help_message'
+    words = trigger.group.split(' ')
+    
+    if not trigger.group(2):
+        bot.reply(usage_str)
+        return
+    elif trigger.admin:
         global helpmsg
         bot.reply('Setting helpmsg to : ' + trigger.group(2))
         helpmsg = trigger.group(2);
