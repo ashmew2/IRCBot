@@ -87,21 +87,25 @@ def wiki(bot, trigger):
 #trigger.group contains the entire thing.
 @willie.module.rule('.*')
 def handle_msg(bot, trigger):
+
+    words = trigger.group().split(' ')
+    
     if trigger.nick not in users:
         users.append(trigger.nick)
 
         #First time user did not type a command. Simply print help.
-        if trigger.group()[0] != '!':
+        if words[0][0] != '!':
             bot.reply(helpmsg)
         #First time user typed A !string which is NOT A COMMAND
-        elif trigger.group() not in fixed_cmdlist and trigger.group() not in learned_cmdlist:
+        elif words[0] not in fixed_cmdlist and words[0] not in learned_cmdlist:
             bot.reply(helpmsg)        
         #First time user typed a command which is in the learned list
-        elif trigger.group() in learned_cmdlist:
+        elif words[0] in learned_cmdlist:
             bot.reply(learned_cmdlist[trigger.group()])
         #Do not need to handle fixed commands
         
-    elif trigger.group() in learned_cmdlist:
+    elif words[0] in learned_cmdlist:
+        print 'Here4'
         #If this is not a first time user and entered a learned command
         bot.reply(learned_cmdlist[trigger.group()])
     
