@@ -137,8 +137,8 @@ def handle_msg(bot, trigger):
     elif words[0] in learned_cmdlist:
         #If this is not a first time user and entered a learned command
         bot.reply(learned_cmdlist[trigger.group()])
-    elif words[0] == '!' and words[0] not in learned_cmdlist and words[0] not in fixed_cmdlist:
-        bot.reply(invalid_cmd_msg)
+#    elif words[0][0] == '!' and words[0] not in learned_cmdlist and words[0] not in fixed_cmdlist:
+#        bot.reply(invalid_cmd_msg)
                                   
 #kolibri_user is the default username for IRCC on Kolibri. So we need to reuse them :)        
 @willie.module.rule('.*')
