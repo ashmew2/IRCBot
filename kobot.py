@@ -12,6 +12,30 @@ learned_cmdlist = {}
 fixed_cmdlist = ['!sethelp', '!learn', '!help', '!logs', '!cmd', '!info', '!wiki']
 invalid_cmd_msg = 'Invalid command. Please try a valid command (See !cmd for details)'
 
+@commands('unlearn')
+def unlearn(bot, trigger):
+    usage_str = 'Usage : !unlearn command_name'
+    words = trigger.group().split(' ')
+    
+    if len(words)!=2:
+        bot.reply(usage_str)
+        return
+
+    if words[1][0] != '1':
+        words[1] = '!' + words[1]
+    
+    if not trigger.admin:
+        bot.reply('You aren\'t allowed to make me forget!')
+        return
+    else:
+        if words[1] in learned_cmdlist:
+            learned_cmdlist.remove(words[1])
+            bot.reply('Successfully forgot ' + words[1]) 
+        else:
+            bot.reply('Cannot forget something I was never taught!')
+
+    return
+
 @commands('sethelp')
 def sethelp(bot, trigger):
     if not trigger.group(2):
