@@ -21,7 +21,7 @@ def unlearn(bot, trigger):
         bot.reply(usage_str)
         return
 
-    if words[1][0] != '1':
+    if words[1][0] != '!':
         words[1] = '!' + words[1]
     
     if not trigger.admin:
@@ -32,7 +32,7 @@ def unlearn(bot, trigger):
             del learned_cmdlist[words[1]]
             bot.reply('Successfully forgot ' + words[1]) 
         else:
-            bot.reply('Cannot forget something I was never taught!')
+            bot.reply('Cannot forget something I don't remember!')
 
     return
 
