@@ -6,7 +6,7 @@ All the command lists use this special symbol as this is standard across most IR
 from willie.module import commands
 import willie.module
 
-users=['xvilka', 'xvilka_', '_xvilka', 'xvilka__', 'xvilka___', 'hidnplayr', 'KolibriOS|yogev', 'ovf']
+users=['xvilka', 'xvilka_', '_xvilka', 'xvilka__', 'xvilka___', 'hidnplayr', 'KolibriOS|yogev', 'ovf', 'ashmew2']
 helpmsg = 'Welcome to #KolibriOS. Ask KolibriOS|Yogev for more help! (Or use !cmd)'
 learned_cmdlist = {}
 fixed_cmdlist = ['!sethelp', '!learn', '!help', '!logs', '!cmd', '!info', '!wiki']
@@ -62,7 +62,7 @@ def help(bot, trigger):
     
 @commands('logs')
 def logs(bot, trigger):    
-    bot.reply('Check out (temporary) logs at http://pastebin.com/18S9gwpX')
+    bot.reply('Check out logs at http://logs.kolibrios.org/kolibrios.log')
 
 @commands('cmd')
 def cmd(bot, trigger):
@@ -70,11 +70,12 @@ def cmd(bot, trigger):
     for i in fixed_cmdlist:
         base_list += (i + ' ')
     bot.reply(base_list)
-        
-    learned_list = 'Learned commands : '
-    for i in learned_cmdlist:
-        learned_list += (i + ' ')
-    bot.reply(learned_list)
+
+    if(len(learned_cmdlist) > 0):
+        learned_list = 'Learned commands : '
+        for i in learned_cmdlist:
+            learned_list += (i + ' ')
+            bot.reply(learned_list)
 
 @commands('info')
 def info(bot, trigger):
