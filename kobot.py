@@ -139,16 +139,7 @@ def handle_msg(bot, trigger):
         bot.reply(learned_cmdlist[trigger.group()])
     elif words[0] == '!' and words[0] not in learned_cmdlist and words[0] not in fixed_cmdlist:
         bot.reply(invalid_cmd_msg)
-    
-                              
-#GSoC related stuff comes later. Below this part.
-@commands('addtask')
-def addtask(bot, trigger):
-    if trigger.admin:
-        bot.say('As you wish.')
-    else:
-        bot.say('You dont have permissions (sadly).')
-
+                                  
 #kolibri_user is the default username for IRCC on Kolibri. So we need to reuse them :)        
 @willie.module.rule('.*')
 @willie.module.event("PART")
