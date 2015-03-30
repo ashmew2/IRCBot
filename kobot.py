@@ -96,10 +96,13 @@ def handle_msg(bot, trigger):
         #First time user typed A !string which is NOT A COMMAND
         elif trigger.group() not in fixed_cmdlist and trigger.group() not in learned_cmdlist:
             bot.reply(helpmsg)        
+        #First time user typed a command which is in the learned list
         elif trigger.group() in learned_cmdlist:
             bot.reply(learned_cmdlist[trigger.group()])
-
+        #Do not need to handle fixed commands
+        
     elif trigger.group() in learned_cmdlist:
+        #If this is not a first time user and entered a learned command
         bot.reply(learned_cmdlist[trigger.group()])
     
                               
