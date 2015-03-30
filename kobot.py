@@ -63,7 +63,11 @@ def logs(bot, trigger):
 
 @commands('cmd')
 def cmd(bot, trigger):
-    bot.reply('Base commands : !info !logs !wiki !help !cmd !sethelp')
+    base_list = 'Base commands : '
+    for i in fixed_cmdlist:
+        base_list += (i + ' ')
+    bot.reply(base_list)
+        
     learned_list = 'Learned commands : '
     for i in learned_cmdlist:
         learned_list += (i + ' ')
@@ -83,8 +87,19 @@ def handle_msg(bot, trigger):
     if trigger.nick not in users:
         users.append(trigger.nick)
 
-        if trigger.group() not in fixed_cmdlist and trigger.group() not in learned_cmdlist():
+        #First time user did not type a command. Simply print help.
+        if trigger.group()[0] != '!':
             bot.reply(helpmsg)
+        #First time user typed A !string which is NOT A COMMAND
+        elif trigger.group() not in fixed_cmdlist and trigger.group() not in learned_cmdlist:
+            bot.reply(helpmsg)
+
+        elif trigger.group() in learned_cmdlist:
+            bot.reply(learned_cmdlist[trigger.group()])
+
+    elif trigger.group() in learned_cmdlist:
+        bot.reply(learned_cmdlist[trigger.group()])
+    
                               
 #GSoC related stuff comes later. Below this part.
 @commands('addtask')
