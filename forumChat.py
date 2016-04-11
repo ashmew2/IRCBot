@@ -1,47 +1,60 @@
 '''
 Read a file and send messaages to the IRC channel
 '''
-
 import sopel.module
 import subprocess
 import time
 
-lastmsgs=[]
-CHANNEL_NAME='#flood'
+CHANNEL_NAME='#kolibrios'
 SKIP_NUMBER = 1
-already_sent_msgs = []
 FUNCTION_LOCK=False
 IRC_LOGS="/home/bob/irc.txt"
+FORUMCHAT_MESSAGES="/home/bob/forumchat.txt"
+try:
+    forumChatMessages = open(FORUMCHAT_MESSAGES)
+except IOError:
+    tempFile = open(FORUMCHAT_MESSAGES, 'w')
+    tempFile.close()
+    forumChatMessages = open(FORUMCHAT_MESSAGES)
+
+global start_talking
+start_talking = False
+global messages_to_skip
+messages_to_skip = 95
 
 @sopel.module.interval(5)
 def send_forumchat_to_IRC(bot):
-
+    global forumChatMessages
     global FUNCTION_LOCK
-    
+
     if FUNCTION_LOCK == True:
-#        print "Returning from function."
         return
     else:
         FUNCTION_LOCK = True
-#        print "Going into Function"
 
-    global already_sent_msgs
-    
     global SKIP_NUMBER
     if SKIP_NUMBER != 5:
         SKIP_NUMBER+=1
         
     elif CHANNEL_NAME in bot.channels:
-        messages=subprocess.check_output(["tail", "-n", "10", "/home/bob/forumchat.txt"]).split('\n')
-        index=len(messages) - 1
+        stuffToSay = []
+        for i in range(0,5):
+            new_message = forumChatMessages.readline()
+            if new_message == '':
+                break
+            stuffToSay.append(new_message)
 
-        for i in messages:
-            if i not in already_sent_msgs:
+        global start_talking
+        global messages_to_skip
+        
+        for i in stuffToSay:
+            if start_talking == True:
                 bot.msg(CHANNEL_NAME, i)
-            
-        already_sent_msgs = messages[:]
-
- #   print "Unlocking Function..."
+            else:
+                messages_to_skip-=1;
+                if messages_to_skip == 0:
+                    start_talking = True;
+                    
     FUNCTION_LOCK = False
 
 @sopel.module.rule('.*')

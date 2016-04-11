@@ -1,22 +1,30 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import subprocess
 import time
 import re
 import getpass
 from HTMLParser import HTMLParser
 from htmlentitydefs import name2codepoint
+import threading
 
 password = getpass.getpass()
 
 POLL_INTERVAL=10
 MESSAGE_FILE="/home/bob/forumchat.txt"
+open(MESSAGE_FILE, 'w').close()
+
+IRC_FILE="/home/bob/irc.txt"
+
+global MY_USERNAME
+MY_USERNAME = "IRC"
 
 driver = webdriver.Firefox()
 driver.get("http://board.kolibrios.org/chat.php")
 
 elem = driver.find_element_by_name("username")
-elem.send_keys("IRC")
+elem.send_keys(MY_USERNAME)
 
 elem = driver.find_element_by_name("password")
 elem.send_keys(password)
@@ -32,8 +40,15 @@ polled_msgs = []
 global already_written_msgs
 already_written_msgs= []
 msgs_to_write = []
+
 global parsed_message
 jobparsed_message = ''
+
+global irc_messages
+irc_messages = []
+
+global already_sent_irc_messages
+already_sent_irc_messages = []
 
 class MyHTMLParser(HTMLParser):
 
@@ -76,7 +91,7 @@ class MyHTMLParser(HTMLParser):
                     href_value = attr[1]
 
             if self.postlink == True or self.postlink_local == True:
-                parsed_message += href_value
+                parsed_message += ' ' + href_value
                                 
     def handle_endtag(self, tag):
         pass
@@ -129,13 +144,26 @@ class MyHTMLParser(HTMLParser):
 #        print "Decl     :", data
                                         
 parser = MyHTMLParser()
-                                    
+global ircMessageFile
+try:
+    ircMessageFile = open(IRC_FILE)
+except IOError:
+    tempFile = open(IRC_FILE, 'w')
+    tempFile.close()
+    ircMessageFile = open(IRC_FILE)
+
 while True:
     global parsed_message
     global already_written_msgs
+    global ircMessageFile
+    global MY_USERNAME
     
     x = driver.page_source
     time.sleep(POLL_INTERVAL)
+
+###Handle the Forum Chat
+###Read the messages from forum Chat
+###Add the logs from Forum Chat to MESSAGES FILE.
     driver.refresh();
     
     x=x.encode('utf-8','ignore')
@@ -145,6 +173,10 @@ while True:
     polled_msgs = []
     for i in msgs:
         username = i[i.find('addtext') + 12:i.find('[/b]')]
+
+        if username == MY_USERNAME:
+            continue
+
         usermsg  = i[i.find('span class="postbody"') + 22:i.find('</span>')]
         parsed_message = ''
         parser.feed(usermsg)
@@ -170,7 +202,34 @@ while True:
             FileHandle.write(i[0] + ': ' + i[1] + '\n')
 
         FileHandle.close()
+    
+    stuffToSay = []
+    for i in range(0,5):
+        new_message = ircMessageFile.readline()
+        if new_message == '':
+            break
+        stuffToSay.append(new_message)
+
+    message_fc = driver.find_element_by_name("message")
+    submit_fc = driver.find_element_by_name("submit")
+
+    for i in stuffToSay:
+        if i.strip() == "":
+            continue
+
+#        print 'IRC: ' + i
+        message_fc.send_keys(i)
+        submit_fc.click()
+        time.sleep(2)
+
+###Handling of Forum Chat incoming messages complete.
+##-------------------------------------------------------------
+
+###Handle messages which arrived on IRC.
+###Read the file and add it.
+###Basically, write the message in the chat box. Press Submit.
+
+###End of IRC incoming messages handle.
 
 #This should never be reached. But just for completeness.
 driver.close()
-
