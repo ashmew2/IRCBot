@@ -1,4 +1,7 @@
 '''
+This module was written for Willie which has been superseded by Sopel IRC Bot.
+We will miss you Willie!
+
 The special character for sending commands to this bot is : !
 All the command lists use this special symbol as this is standard across most IRC channels
 '''
