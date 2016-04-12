@@ -20,7 +20,7 @@ except IOError:
 global start_talking
 start_talking = False
 global messages_to_skip
-messages_to_skip = 95
+messages_to_skip = 86
 
 @sopel.module.interval(5)
 def send_forumchat_to_IRC(bot):
@@ -35,7 +35,7 @@ def send_forumchat_to_IRC(bot):
     global SKIP_NUMBER
     if SKIP_NUMBER != 5:
         SKIP_NUMBER+=1
-        
+
     elif CHANNEL_NAME in bot.channels:
         stuffToSay = []
         for i in range(0,5):
@@ -46,7 +46,7 @@ def send_forumchat_to_IRC(bot):
 
         global start_talking
         global messages_to_skip
-        
+
         for i in stuffToSay:
             if start_talking == True:
                 bot.msg(CHANNEL_NAME, i)
@@ -54,12 +54,15 @@ def send_forumchat_to_IRC(bot):
                 messages_to_skip-=1;
                 if messages_to_skip == 0:
                     start_talking = True;
-                    
+
     FUNCTION_LOCK = False
 
 @sopel.module.rule('.*')
 def handle_msg(bot, trigger):
     global IRC_LOGS
     ircLogs = open(IRC_LOGS, 'a')
-    ircLogs.write(trigger.nick + ': ' + trigger.group() + '\n')
+
+    enick=trigger.nick.encode('utf-8','ignore')
+    emsg=trigger.group().encode('utf-8', 'ignore')
+    ircLogs.write('[b]<' + enick + '>[/b] ' + trigger.group() + '\n')
     ircLogs.close()

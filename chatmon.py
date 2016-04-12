@@ -54,7 +54,7 @@ class MyHTMLParser(HTMLParser):
 
     postlink = False
     postlink_local = False
-    
+
     def handle_starttag(self, tag, attrs):
         global parsed_message
         if tag == "img":
@@ -68,7 +68,7 @@ class MyHTMLParser(HTMLParser):
 
                     if attr[1][0:2] == './':
                         local_image = True
-                    
+
                 if attr[0] == 'alt':
                     alt_emoticon = attr[1]
 
@@ -80,7 +80,7 @@ class MyHTMLParser(HTMLParser):
             self.postlink_local = False
             self.postlink = False
             href_value = ''
-            
+
             for attr in attrs:
                 if attr[0] == 'class':
                     if attr[1] == 'postlink':
@@ -92,7 +92,7 @@ class MyHTMLParser(HTMLParser):
 
             if self.postlink == True or self.postlink_local == True:
                 parsed_message += ' ' + href_value
-                                
+
     def handle_endtag(self, tag):
         pass
 #        print "End tag  :", tag
@@ -110,10 +110,10 @@ class MyHTMLParser(HTMLParser):
             self.postlink = False
             self.postlink_local = False
             return
-        
+
         if data[0:14] == 'viewtopic.php?':
             parsed_message += 'board.kolibrios.org/'
-            
+
         parsed_message += data
 #        print "Data     :", data
 
@@ -137,12 +137,12 @@ class MyHTMLParser(HTMLParser):
             c = unichr(int(name))
 
         parsed_message += c
-#        print "Num ent  :", c
 
+#   print "Num ent  :", c
     def handle_decl(self, data):
         pass
-#        print "Decl     :", data
-                                        
+#   print "Decl     :", data
+
 parser = MyHTMLParser()
 global ircMessageFile
 try:
@@ -157,7 +157,7 @@ while True:
     global already_written_msgs
     global ircMessageFile
     global MY_USERNAME
-    
+
     x = driver.page_source
     time.sleep(POLL_INTERVAL)
 
@@ -165,11 +165,11 @@ while True:
 ###Read the messages from forum Chat
 ###Add the logs from Forum Chat to MESSAGES FILE.
     driver.refresh();
-    
+
     x=x.encode('utf-8','ignore')
     msgs=re.findall('postauthor.*', x)
 #    print len(msgs)
-    
+
     polled_msgs = []
     for i in msgs:
         username = i[i.find('addtext') + 12:i.find('[/b]')]
@@ -182,6 +182,10 @@ while True:
         parser.feed(usermsg)
         usermsg = parsed_message[:]
 
+        #Cut the initial part when someone talks to IRC on ForumChat.
+        if usermsg[0:4] == "IRC:":
+            usermsg = usermsg[4:]
+
         #usermsg contains some embedded HTML tags.
         #We should ignore all tags.
 
@@ -191,18 +195,18 @@ while True:
     for i in polled_msgs:
         if i not in already_written_msgs:
             msgs_to_write.append(i)
-    
+
     already_written_msgs = polled_msgs[:]
-    
+
     if len(msgs_to_write) != 0:
         FileHandle = open(MESSAGE_FILE, 'a')
-        
+
         for i in msgs_to_write[::-1]:
-#            print 'Writing ' + str(i)
-            FileHandle.write(i[0] + ': ' + i[1] + '\n')
+#           print 'Writing ' + str(i)
+            FileHandle.write('[' + i[0] + ']: ' + i[1] + '\n')
 
         FileHandle.close()
-    
+
     stuffToSay = []
     for i in range(0,5):
         new_message = ircMessageFile.readline()
@@ -217,6 +221,7 @@ while True:
         if i.strip() == "":
             continue
 
+        i=unicode(i.decode('utf-8'))
 #        print 'IRC: ' + i
         message_fc.send_keys(i)
         submit_fc.click()
