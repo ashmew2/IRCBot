@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import selenium
 import subprocess
 import time
 import re
@@ -11,11 +12,15 @@ import threading
 
 password = getpass.getpass()
 
+retry_count = 0
+MAX_RETRY_COUNT = 10
+
 POLL_INTERVAL=10
 MESSAGE_FILE="/home/bob/forumchat.txt"
 open(MESSAGE_FILE, 'w').close()
 
 IRC_FILE="/home/bob/irc.txt"
+open(IRC_FILE,'w').close()
 
 global MY_USERNAME
 MY_USERNAME = "IRC"
@@ -214,8 +219,19 @@ while True:
             break
         stuffToSay.append(new_message)
 
-    message_fc = driver.find_element_by_name("message")
-    submit_fc = driver.find_element_by_name("submit")
+    global retry_count
+    global MAX_RETRY_COUNT
+
+    try:
+        message_fc = driver.find_element_by_name("message")
+        submit_fc = driver.find_element_by_name("submit")
+        retry_count = 0
+    except selenium.common.exceptions.NoSuchElementException:
+        retry_count+=1
+        if retry_count > MAX_RETRY_COUNT:
+            print "Failed to reach page after several retries."
+            exit()
+        continue
 
     for i in stuffToSay:
         if i.strip() == "":
